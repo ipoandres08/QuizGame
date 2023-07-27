@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuizzGameApplication</name>
+    </assembly>
+    <members>
+        <member name="M:QuizzGameApplication.Controllers.QuizController.Get">
+            <summary>
+            Get quizzes 
+            </summary>
+            <returns>A enumerable of quizzes</returns>
+            <response code="200">Returns the requested Quizzes</response>
+            <response code="400">Bad Request</response>
+            <response code="404">Not found</response>
+        </member>
+        <member name="M:QuizzGameApplication.Controllers.QuizController.Post(QuizGame.Models.Quiz)">
+            <summary>
+            Add a quiz
+            </summary>
+            <returns>Empty</returns>
+            <response code="201">Returns nothing</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unautharized</response>
+            <response code="404">Not found</response>
+            <response code="422">This is not valid</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:QuizzGameApplication.Controllers.QuizController.Delete(System.Int32)">
+            <summary>
+            Delete a quiz
+            </summary>
+            <param name="id">This is the quiz Id</param>
+            <returns>Empty</returns>
+            <response code="200">Returns nothing</response>
+            <response code="400">Bad Request</response>
+            <response code="404">Not found</response>
+        </member>
+        <member name="M:QuizzGameApplication.Controllers.QuizController.Put(System.Int32,QuizGame.Models.Quiz)">
+            <summary>
+            Edit a quiz
+            </summary>
+            <param name="id">This is the quiz Id</param>
+            <returns>Empty</returns>
+            <response code="200">Returns nothing</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unautharized</response>
+            <response code="404">Not found</response>
+            <response code="422">This is not valid</response>
+            <response code="500">Internal server error</response>
+        </member>
+    </members>
+</doc>
