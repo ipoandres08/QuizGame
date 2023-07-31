@@ -11,14 +11,17 @@ namespace QuizzGameApplication.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationRequestService _authenticationService;
-        public AuthenticationController(IAuthenticationRequestService authenticationService)
+        private readonly ILogger<AuthenticationController> _logger;
+        public AuthenticationController(ILogger<AuthenticationController> logger, IAuthenticationRequestService authenticationService)
         {
+            _logger = logger;
             _authenticationService = authenticationService;
         }
 
         [HttpPost("authenticate")]
         public ActionResult<string> Authenticate(AuthenticationRequestBody authenticationRequestBody)
         {
+            _logger.LogInformation("User Logged with this token ");
             return _authenticationService.AuthenticateRequest(authenticationRequestBody);
         }
     }

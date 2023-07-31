@@ -2,10 +2,18 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using QuizGame.Service;
 using QuizzGameApplication.Services;
-using System.Reflection;
+using System;
+using Serilog;
+using System.Text;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.File("logs/quizGameLogs.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddHealthChecks();
 
