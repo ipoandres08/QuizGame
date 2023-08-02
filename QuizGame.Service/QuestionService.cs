@@ -21,6 +21,10 @@ namespace QuizGame.Service
 
         public void DeleteQuestion(int questionId)
         {
+            if (!FindQuestion(questionId))
+            {
+                throw new ArgumentException("The question Id doesn't exists");
+            }
             questionsList.Remove(questionId);
         }
 
@@ -31,12 +35,21 @@ namespace QuizGame.Service
 
         public Question GetQuestion(int questionId)
         {
+            if(!FindQuestion(questionId))
+            {
+                throw new ArgumentException("The question Id doesn't exists");
+            }
             return questionsList[questionId];
         }
 
         public Question UpdateQuestion(int questionId, Question question)
         {
             return questionsList[questionId] = question;
+        }
+
+        private bool FindQuestion(int questionId)
+        {
+            return questionsList.ContainsKey(questionId);
         }
     }
 }

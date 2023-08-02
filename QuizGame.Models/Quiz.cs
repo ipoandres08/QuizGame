@@ -9,6 +9,8 @@ namespace QuizGame.Models
 {
     public class Quiz : IValidatableObject
     {
+        public int Id { get; set; } = new Random().Next();
+
         [Required(ErrorMessage = "You should fill out a name.")]
         public string Name { get; set; }
 

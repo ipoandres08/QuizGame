@@ -8,12 +8,15 @@ namespace QuizGame.Models
 {
     public class Question
     {
+        public int QuizId { get; set; }
+        public int QuestionId { get; set; } = new Random().Next();
         public string Text { get; set; }
         public string CorrectAnswer { get; set; }
         public int Score { get; set; }
 
-        public Question(string text, string correctAnswer, int score) 
+        public Question(int quizId, string text, string correctAnswer, int score) 
         { 
+            this.QuizId = quizId;
             this.Text = text;
             this.CorrectAnswer = correctAnswer;
             this.Score = score;

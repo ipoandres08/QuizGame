@@ -10,7 +10,7 @@ namespace QuizGame.Models
     {
         public int BlankPosition { get; set; }
 
-        public FillBlankQuestion(string text, string correctAnswer, int score, int blankPosition) : base(text, correctAnswer, score)
+        public FillBlankQuestion(int questionID, string text, string correctAnswer, int score, int blankPosition) : base(questionID, text, correctAnswer, score)
         {
             BlankPosition = blankPosition;
         }

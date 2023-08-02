@@ -11,7 +11,7 @@ namespace QuizGame.Models
     {
         public List<string> Choices { get; set; }
 
-        public MultipleChoiceQuestion(string text, string correctAnswer, int score, List<string> choices) : base( text, correctAnswer, score)
+        public MultipleChoiceQuestion(int questionID, string text, string correctAnswer, int score, List<string> choices) : base(questionID, text, correctAnswer, score)
         {
             this.Choices = choices;
         }
