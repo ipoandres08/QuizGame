@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <DocumentationFile>G:\JalaSoft\C#Trainee\QuizGame\QuizGameWeb\QuizGameWeb.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

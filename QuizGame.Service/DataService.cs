@@ -10,7 +10,7 @@ namespace QuizGame.Service
 {
     public class DataService
     {
-        public Collection[] ReadData()
+       /* public Collection[] ReadData()
         {
             Collection[] data = new Collection[3];
             Dictionary<int, List<Quiz>> quizzes = ReadQuizzes();
@@ -106,6 +106,6 @@ namespace QuizGame.Service
             choices.Add(4, choicesList);
 
             return choices;
-        }
+        }*/
     }
 }

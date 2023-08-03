@@ -44,8 +44,8 @@ builder.Services.AddSwaggerGen(setupAction =>
     setupAction.IncludeXmlComments(xmlComentsFullPath);
 }
 );
-builder.Services.AddScoped<IQuestionService, QuestionService>();
-builder.Services.AddScoped<IAuthenticationRequestService, AuthenticationRequestService>();
+builder.Services.AddSingleton<IQuestionService, QuestionService>();
+builder.Services.AddSingleton<IAuthenticationRequestService, AuthenticationRequestService>();
 
 builder.Services.AddApiVersioning(setupAction =>
 {

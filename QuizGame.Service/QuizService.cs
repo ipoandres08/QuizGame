@@ -9,6 +9,7 @@ namespace QuizGame.Service
 {
     internal class QuizService : IQuizService
     {
+        private readonly 
         public Question AddQuiz(Quiz quiz)
         {
             throw new NotImplementedException();

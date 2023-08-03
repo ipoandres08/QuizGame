@@ -15,7 +15,7 @@ namespace QuizGame.Service
             dataService = new DataService();
         }
 
-        public void Show()
+        /*public void Show()
         {
             Collection[] collections = dataService.ReadData();
             Console.WriteLine("Welcome to the quizz console Application:\n");
@@ -82,7 +82,7 @@ namespace QuizGame.Service
             Console.WriteLine($"Quiz completed!\nYour score: {playerScore} out of {totalScore}");
             if (playerScore == totalScore) Console.WriteLine("Good job!");
 
-        }
+        }*/
 
     }
 }

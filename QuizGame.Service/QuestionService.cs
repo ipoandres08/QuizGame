@@ -11,7 +11,7 @@ namespace QuizGame.Service
     {
         private readonly Dictionary<int, Question> questionsList = new Dictionary<int, Question>();
         int i = 0;
-        
+
         public Question AddQuestion(Question question)
         {
             questionsList.Add(i, question);
