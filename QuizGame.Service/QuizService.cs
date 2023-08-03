@@ -7,32 +7,54 @@ using System.Threading.Tasks;
 
 namespace QuizGame.Service
 {
-    internal class QuizService : IQuizService
+    public class QuizService : IQuizService
     {
-        private readonly 
-        public Question AddQuiz(Quiz quiz)
+        private readonly List<Quiz> quizzes = new List<Quiz>();
+        public Quiz AddQuiz(Quiz quiz)
         {
-            throw new NotImplementedException();
+            quizzes.Add(quiz);
+            return quiz;
         }
 
         public void DeleteQuiz(int id)
         {
-            throw new NotImplementedException();
+            Quiz foundQuiz = GetQuizById(id);
+            if (foundQuiz == null)
+            {
+                throw new ArgumentException("The Quiz Id doesn't exists");
+            }
+            quizzes.Remove(foundQuiz);
         }
 
-        public List<Question> GetAllQuizzes()
+        public List<Quiz> GetAllQuizzes()
         {
-            throw new NotImplementedException();
+            return quizzes;
         }
 
-        public Question GetQuizById(int id)
+        public Quiz GetQuizById(int id)
         {
-            throw new NotImplementedException();
+            return quizzes.Find(q => q.Id == id);
         }
 
-        public Question UpdateQuiz(int id, Quiz quiz)
+        public Quiz UpdateQuiz(int id, Quiz quiz)
         {
-            throw new NotImplementedException();
+            Quiz foundQuiz = GetQuizById(id);
+            if (foundQuiz == null)
+            {
+                throw new ArgumentException("The Quiz Id doesn't exists");
+            }
+            foreach(Quiz q in quizzes)
+            {
+                if(q.Id == id)
+                {
+                    q.Description = quiz.Description;
+                    q.Name = quiz.Name;
+                    q.Categories = quiz.Categories;
+                    q.Questions = quiz.Questions;
+                }
+            }
+            
+            return quiz;
         }
     }
 }

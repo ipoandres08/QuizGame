@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>G:\JalaSoft\C#Trainee\QuizGame\QuizGameWeb\QuizGameWeb.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\carely.villca\Documents\API\QuizGame\QuizGameWeb\QuizGameWeb.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

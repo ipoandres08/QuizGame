@@ -9,10 +9,10 @@ namespace QuizGame.Service
 {
     public  interface IQuizService
     {
-        Question AddQuiz(Quiz quiz);
-        List<Question> GetAllQuizzes();
-        Question GetQuizById(int id);
+        Quiz AddQuiz(Quiz quiz);
+        List<Quiz> GetAllQuizzes();
+        Quiz GetQuizById(int id);
         void DeleteQuiz(int id);
-        Question UpdateQuiz(int id, Quiz quiz);
+        Quiz UpdateQuiz(int id, Quiz quiz);
     }
 }

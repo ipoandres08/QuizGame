@@ -45,6 +45,7 @@ builder.Services.AddSwaggerGen(setupAction =>
 }
 );
 builder.Services.AddSingleton<IQuestionService, QuestionService>();
+builder.Services.AddSingleton<IQuizService, QuizService>();
 builder.Services.AddSingleton<IAuthenticationRequestService, AuthenticationRequestService>();
 
 builder.Services.AddApiVersioning(setupAction =>
