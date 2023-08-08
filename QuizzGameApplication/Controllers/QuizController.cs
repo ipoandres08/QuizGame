@@ -8,9 +8,9 @@ namespace QuizzGameApplication.Controllers
     [Route("api/[controller]")]
     public class QuizController : ControllerBase
     {
-        IQuizService service;
+        private readonly IQuizService service;
 
-        public QuizController(ILogger<QuizController> logger, IQuizService quizService) 
+        public QuizController(IQuizService quizService) 
         {
             service = quizService;
         }
@@ -20,10 +20,11 @@ namespace QuizzGameApplication.Controllers
         /// </summary>
         /// <returns>A enumerable of quizzes</returns>
         /// <response code="200">Returns the requested Quiz</response>
-        /// /// <response code="404">Not found</response>
+        /// <response code="404">Not found</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Quiz))]
-        public ActionResult<Quiz> GetById(int id)
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<Quiz> GetById([FromRoute] int id)
         {
             Quiz quizFound = service.GetQuizById(id);
             if(quizFound != null)
@@ -40,11 +41,10 @@ namespace QuizzGameApplication.Controllers
         /// <response code="200">Returns the requested Quizzes</response>
         /// <response code="400">Bad Request</response>
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Quiz>))]
         [HttpGet(Name = "GetQuiz")]
-        public ActionResult<IEnumerable<Quiz>> Get()
+        public IEnumerable<Quiz> Get()
         {
-            return Ok(service.GetAllQuizzes());
+            return service.GetAllQuizzes();
         }
 
         /// <summary>
@@ -59,14 +59,13 @@ namespace QuizzGameApplication.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPost(Name = "PostQuizzes")]
         public ActionResult Post([FromBody]Quiz quiz) 
         {
             if(ModelState.IsValid)
             {
                 service.AddQuiz(quiz);
-                return NoContent();
+                return Created("/api/Quiz/{id}", quiz);
             }
             return UnprocessableEntity();
         }
@@ -81,8 +80,8 @@ namespace QuizzGameApplication.Controllers
         /// <response code="404">Not found</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpDelete("delete/{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public ActionResult<Quiz> Delete([FromRoute] int id) 
         {
             Quiz quizFound = service.GetQuizById(id);
@@ -108,8 +107,8 @@ namespace QuizzGameApplication.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPut("put/{id}")]
+        [HttpPut]
+        [Route("{id}")]
         public ActionResult<Quiz> Put([FromRoute] int id, [FromBody] Quiz quiz)
         {
             Quiz quizFound = service.GetQuizById(id);

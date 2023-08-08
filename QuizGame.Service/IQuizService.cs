@@ -10,7 +10,7 @@ namespace QuizGame.Service
     public  interface IQuizService
     {
         Quiz AddQuiz(Quiz quiz);
-        List<Quiz> GetAllQuizzes();
+        IEnumerable<Quiz> GetAllQuizzes();
         Quiz GetQuizById(int id);
         void DeleteQuiz(int id);
         Quiz UpdateQuiz(int id, Quiz quiz);

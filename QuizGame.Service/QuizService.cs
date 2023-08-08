@@ -26,7 +26,7 @@ namespace QuizGame.Service
             quizzes.Remove(foundQuiz);
         }
 
-        public List<Quiz> GetAllQuizzes()
+        public IEnumerable<Quiz> GetAllQuizzes()
         {
             return quizzes;
         }
