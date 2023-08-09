@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QuizGame.Models;
 using QuizGame.Service;
 
 namespace QuizzGameApplication.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class QuizController : ControllerBase
     {
