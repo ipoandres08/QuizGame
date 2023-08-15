@@ -93,7 +93,7 @@ builder.Services.AddSingleton<IQuestionService, QuestionService>();
 builder.Services.AddSingleton<IQuizService, QuizService>();
 builder.Services.AddSingleton<IAuthenticationRequestService, AuthenticationRequestService>();
 
-//builder.Services.AddSingleton<QuizGameContext>();
+builder.Services.AddSingleton<QuizGameContext>();
 
 builder.Services.AddApiVersioning(setupAction =>
 {
