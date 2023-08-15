@@ -24,6 +24,11 @@
   <ItemGroup>
     <ProjectReference Include="..\QuizGame.Models\QuizGame.Models.csproj" />
     <ProjectReference Include="..\QuizGame.Service\QuizGame.Service.csproj" />
+    <ProjectReference Include="..\QuizGamePerssistence\QuizGamePerssistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Context\" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using Serilog;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
+using QuizGamePerssistence.Models;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -91,6 +92,8 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddSingleton<IQuestionService, QuestionService>();
 builder.Services.AddSingleton<IQuizService, QuizService>();
 builder.Services.AddSingleton<IAuthenticationRequestService, AuthenticationRequestService>();
+
+//builder.Services.AddSingleton<QuizGameContext>();
 
 builder.Services.AddApiVersioning(setupAction =>
 {
