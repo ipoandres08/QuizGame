@@ -14,6 +14,7 @@ namespace QuizGamePerssistence.Constants
             public const string QuestionNotFound = "Question was not found.";
             public const string NoChanges = "No changes were applied.";
             public const string CategoryNotFound = "Category was not found.";
+            public const string CollectionNotFound = "Collection was not found.";
         }
 
         public static class ValidationMessages

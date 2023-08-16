@@ -9,7 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\QuizGame.Models\QuizGame.Models.csproj" />
+    <ProjectReference Include="..\QuizGamePerssistence\QuizGamePerssistence.csproj" />
   </ItemGroup>
 
 </Project>

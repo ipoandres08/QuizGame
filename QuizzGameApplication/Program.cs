@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using QuizGamePerssistence.Models;
+using QuizGamePerssistence.Repositories;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -94,6 +95,7 @@ builder.Services.AddSingleton<IQuizService, QuizService>();
 builder.Services.AddSingleton<IAuthenticationRequestService, AuthenticationRequestService>();
 
 builder.Services.AddSingleton<QuizGameContext>();
+builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
 
 builder.Services.AddApiVersioning(setupAction =>
 {

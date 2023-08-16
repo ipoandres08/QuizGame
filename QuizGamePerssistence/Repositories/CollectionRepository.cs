@@ -41,16 +41,39 @@ namespace QuizGamePerssistence.Repositories
             return collection;
         }
 
-        public Task<OneOf<Collection, RequestError>> DeleteCollection(Guid id, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> DeleteCollection(Guid id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var foundedCollection = await GetCollectionByID(id, cancellationToken);
+            if (foundedCollection.IsT1)
+            {
+                return foundedCollection;
+            }
+
+            _context.Collections.Remove(foundedCollection.AsT0);
+            //var debugView = _context.ChangeTracker.DebugView.ShortView; //TODO Remove once its used
+            var result = await _context.SaveChangesAsync(cancellationToken);
+
+            if (result == 0)
+            {
+                return new RequestError(
+                    HttpStatusCode.BadRequest, RequestErrorMessages.NoChanges);
+            }
+
+            return foundedCollection;
         }
 
         public async Task<OneOf<Collection, RequestError>> GetCollectionByID(Guid id, CancellationToken cancellationToken)
         {
-            return await _context.Collections
+            var collection =  await _context.Collections
                 .Where(collection => collection.CollectionId == id)
                 .FirstOrDefaultAsync(cancellationToken);
+
+            if (collection is null)
+            {
+                return new RequestError(HttpStatusCode.NotFound, RequestErrorMessages.CategoryNotFound);
+            }
+
+            return collection;
         }
 
         public async Task<IEnumerable<Collection>> GetCollections(CancellationToken cancellationToken)
@@ -58,9 +81,36 @@ namespace QuizGamePerssistence.Repositories
             return await _context.Collections.ToListAsync(cancellationToken);
         }
 
-        public Task<OneOf<Collection, RequestError>> UpdateCollection(Guid id, Collection collection, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> UpdateCollection(Guid id, Collection collection, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var foundedCollection = await _context.Collections
+           .Where(x => x.CollectionId == collection.CollectionId)
+           .FirstOrDefaultAsync(cancellationToken);
+            if (foundedCollection is null)
+            {
+                return new RequestError(
+                    HttpStatusCode.NotFound, RequestErrorMessages.CollectionNotFound);
+            }
+
+            var validationResult = await _validator
+                .ValidateAsync(collection);
+            if (!validationResult.IsValid)
+            {
+                return new RequestError(
+                    HttpStatusCode.UnprocessableEntity, validationResult.ToString());
+            }
+
+            foundedCollection.Name = collection.Name;
+            foundedCollection.Description = collection.Description;
+            //var debugView = _context.ChangeTracker.DebugView.ShortView; //TODO Remove once its used
+            var result = await _context.SaveChangesAsync(cancellationToken);
+            if (result == 0)
+            {
+                return new RequestError(
+                    HttpStatusCode.BadRequest, RequestErrorMessages.NoChanges);
+            }
+
+            return collection;
         }
     }
 }
