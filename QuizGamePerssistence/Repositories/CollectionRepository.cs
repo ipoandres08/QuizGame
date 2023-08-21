@@ -10,22 +10,23 @@ namespace QuizGamePerssistence.Repositories
     public class CollectionRepository: ICollectionRepository
     {
         private readonly QuizGameContext _context;
-        private readonly IValidator<Collection> _validator;
+        //private readonly IValidator<Collection> _validator;
 
-        public CollectionRepository(QuizGameContext context, IValidator<Collection> validator)
+        public CollectionRepository(QuizGameContext context)
         {
             _context = context;
-            _validator = validator;
+            //_validator = validator;
         }
 
         public async Task<OneOf<Collection, RequestError>> AddCollection(Collection collection, CancellationToken cancellationToken)
         {
+            /*
             var validationResult = await _validator.ValidateAsync(collection);
             if (!validationResult.IsValid)
             {
                 return new RequestError(
                     HttpStatusCode.UnprocessableEntity, validationResult.ToString());
-            }
+            }*/
 
             await _context.Collections
                 .AddAsync(collection, cancellationToken);
@@ -91,14 +92,14 @@ namespace QuizGamePerssistence.Repositories
                 return new RequestError(
                     HttpStatusCode.NotFound, RequestErrorMessages.CollectionNotFound);
             }
-
+            /*
             var validationResult = await _validator
                 .ValidateAsync(collection);
             if (!validationResult.IsValid)
             {
                 return new RequestError(
                     HttpStatusCode.UnprocessableEntity, validationResult.ToString());
-            }
+            }*/
 
             foundedCollection.Name = collection.Name;
             foundedCollection.Description = collection.Description;

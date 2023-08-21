@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\QuizGame.Models\QuizGame.Models.csproj" />
     <ProjectReference Include="..\QuizGame.Service\QuizGame.Service.csproj" />
+    <ProjectReference Include="..\QuizGame.Validators\QuizGame.Validators.csproj" />
     <ProjectReference Include="..\QuizGamePerssistence\QuizGamePerssistence.csproj" />
   </ItemGroup>
 

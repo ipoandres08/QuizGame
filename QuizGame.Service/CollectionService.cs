@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QuizGame.Service
 {
-    internal class CollectionService : ICollectionService
+    public class CollectionService : ICollectionService
     {
         private readonly IValidator<CollectionForUpsert> _validator;
         private readonly ICollectionRepository _collectionRepository;
