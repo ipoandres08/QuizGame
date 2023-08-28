@@ -1,7 +1,13 @@
-﻿using QuizGame.Models;
+﻿using FluentValidation;
+using Mapster;
+using OneOf;
+using QuizGamePerssistence.Models;
+using QuizGamePerssistence.Models.DTOs;
+using QuizGamePerssistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,52 +15,40 @@ namespace QuizGame.Service
 {
     public class QuizService : IQuizService
     {
-        private readonly List<Quiz> quizzes = new List<Quiz>();
-        public Quiz AddQuiz(Quiz quiz)
+        private readonly IValidator<QuizForUpsert> _validator;
+        private readonly IQuizRepository _quizRepository;
+
+        public QuizService(IValidator<QuizForUpsert> validator, IQuizRepository quizRepository)
         {
-            quizzes.Add(quiz);
-            return quiz;
+            ArgumentNullException.ThrowIfNull(validator);
+            ArgumentNullException.ThrowIfNull(quizRepository);
+            _validator = validator;
+            _quizRepository = quizRepository;
         }
 
-        public void DeleteQuiz(int id)
+        public Task<OneOf<Quiz, RequestError>> CreateQuizz(QuizForUpsert newCollection, CancellationToken cancellationToken)
         {
-            Quiz foundQuiz = GetQuizById(id);
-            if (foundQuiz == null)
-            {
-                throw new ArgumentException("The Quiz Id doesn't exists");
-            }
-            quizzes.Remove(foundQuiz);
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<Quiz> GetAllQuizzes()
+        public Task<OneOf<Quiz, RequestError>> DeleteQuizz(Guid id, CancellationToken cancellationToken)
         {
-            return quizzes;
+            throw new NotImplementedException();
         }
 
-        public Quiz GetQuizById(int id)
+        public Task<OneOf<Quiz, RequestError>> RetrieveQuizz(Guid id, CancellationToken cancellationToken)
         {
-            return quizzes.Find(q => q.Id == id);
+            throw new NotImplementedException();
         }
 
-        public Quiz UpdateQuiz(int id, Quiz quiz)
+        public Task<IEnumerable<Quiz>> RetrieveQuizzes(CancellationToken cancellationToken)
         {
-            Quiz foundQuiz = GetQuizById(id);
-            if (foundQuiz == null)
-            {
-                throw new ArgumentException("The Quiz Id doesn't exists");
-            }
-            foreach(Quiz q in quizzes)
-            {
-                if(q.Id == id)
-                {
-                    q.Description = quiz.Description;
-                    q.Name = quiz.Name;
-                    q.Categories = quiz.Categories;
-                    q.Questions = quiz.Questions;
-                }
-            }
-            
-            return quiz;
+            throw new NotImplementedException();
+        }
+
+        public Task<OneOf<Quiz, RequestError>> UpdateQuizz(Guid id, QuizForUpsert collection, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

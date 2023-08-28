@@ -1,18 +1,22 @@
-﻿using QuizGame.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OneOf;
+using QuizGamePerssistence.Models;
+using QuizGamePerssistence.Models.DTOs;
 
 namespace QuizGame.Service
 {
     public  interface IQuizService
     {
-        Quiz AddQuiz(Quiz quiz);
-        IEnumerable<Quiz> GetAllQuizzes();
-        Quiz GetQuizById(int id);
-        void DeleteQuiz(int id);
-        Quiz UpdateQuiz(int id, Quiz quiz);
+
+        Task<IEnumerable<Quiz>> RetrieveQuizzes(
+      CancellationToken cancellationToken);
+        Task<OneOf<Quiz, RequestError>> RetrieveQuizz(
+            Guid id, CancellationToken cancellationToken);
+        Task<OneOf<Quiz, RequestError>> CreateQuizz(
+            QuizForUpsert newCollection, bool addNewQuizzes, CancellationToken cancellationToken);
+        Task<OneOf<Quiz, RequestError>> UpdateQuizz(
+            Guid id, QuizForUpsert collection, CancellationToken cancellationToken);
+        Task<OneOf<Quiz, RequestError>> DeleteQuizz(
+            Guid id, CancellationToken cancellationToken);
+
     }
 }

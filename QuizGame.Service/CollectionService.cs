@@ -4,12 +4,7 @@ using OneOf;
 using QuizGamePerssistence.Models;
 using QuizGamePerssistence.Models.DTOs;
 using QuizGamePerssistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuizGame.Service
 {
@@ -28,7 +23,7 @@ namespace QuizGame.Service
             _collectionRepository = collectionRepository;
         }
 
-        public async Task<OneOf<Collection, RequestError>> CreateCollection(CollectionForUpsert newCollection, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> CreateCollection(CollectionForUpsert newCollection, bool addNewQuizzes, CancellationToken cancellationToken)
         {
             var result = _validator.Validate(newCollection);
             if (!result.IsValid)
@@ -39,7 +34,7 @@ namespace QuizGame.Service
             }
 
             var createdCollection = await _collectionRepository
-                    .AddCollection(newCollection.Adapt<Collection>(), cancellationToken);
+                    .AddCollection(newCollection.Adapt<Collection>(), addNewQuizzes, cancellationToken);
             if (createdCollection.IsT1)
             {
                 return createdCollection.AsT1;
@@ -49,9 +44,16 @@ namespace QuizGame.Service
             return createdCollectionDto;
         }
 
-        public Task<OneOf<Collection, RequestError>> DeleteCollection(Guid id, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> DeleteCollection(Guid id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var collectionResult = await _collectionRepository.DeleteCollection(id, cancellationToken);
+            if (collectionResult.IsT1)
+            {
+                return collectionResult.AsT1;
+            }
+
+            var foundedCollection = collectionResult.AsT0;
+            return foundedCollection;
         }
 
         public async Task<IEnumerable<Collection>> RetrieveCollections(CancellationToken cancellationToken)
@@ -63,14 +65,30 @@ namespace QuizGame.Service
             return collectionsDtos;
         }
 
-        public Task<OneOf<Collection, RequestError>> RetrieveCollection(Guid id, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> RetrieveCollection(Guid id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var collectionResult = await _collectionRepository.GetCollectionByID(id, cancellationToken);
+            if (collectionResult.IsT1)
+            {
+                return collectionResult.AsT1;
+            }
+
+            var foundedCollection = collectionResult.AsT0;
+            return foundedCollection;
         }
 
-        public Task<OneOf<Collection, RequestError>> UpdateCollection(Guid id, CollectionForUpsert collection, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> UpdateCollection(Guid id, CollectionForUpsert collection, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var collectionToUpdate = collection.Adapt<Collection>();
+            var collectionResult = await _collectionRepository.UpdateCollection(id, collectionToUpdate, cancellationToken);
+
+            if (collectionResult.IsT1)
+            {
+                return collectionResult.AsT1;
+            }
+
+            var foundedCollection = collectionResult.AsT0;
+            return foundedCollection;
         }
     }
 }

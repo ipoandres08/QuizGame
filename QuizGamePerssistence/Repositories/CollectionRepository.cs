@@ -10,15 +10,17 @@ namespace QuizGamePerssistence.Repositories
     public class CollectionRepository: ICollectionRepository
     {
         private readonly QuizGameContext _context;
+        private readonly IQuizRepository _quizRepository;  
         //private readonly IValidator<Collection> _validator;
 
-        public CollectionRepository(QuizGameContext context)
+        public CollectionRepository(QuizGameContext context, IQuizRepository quizRepository)
         {
             _context = context;
+            _quizRepository = quizRepository;
             //_validator = validator;
         }
 
-        public async Task<OneOf<Collection, RequestError>> AddCollection(Collection collection, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> AddCollection(Collection collection, bool addNewQuizzes = false, CancellationToken cancellationToken)
         {
             /*
             var validationResult = await _validator.ValidateAsync(collection);
@@ -28,18 +30,58 @@ namespace QuizGamePerssistence.Repositories
                     HttpStatusCode.UnprocessableEntity, validationResult.ToString());
             }*/
 
-            await _context.Collections
-                .AddAsync(collection, cancellationToken);
-            var debugView = _context.ChangeTracker.DebugView.ShortView; //TODO Remove once its used
-            var result = await _context.SaveChangesAsync(cancellationToken);
-
-            if (result == 0)
+            if (!collection.Quizzes.Any())
             {
-                return new RequestError(
-                    HttpStatusCode.BadRequest, RequestErrorMessages.NoChanges);
+                await _context.Collections.AddAsync(collection, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+                return collection;
             }
 
-            return collection;
+            using var transaction = await _context.Database
+                .BeginTransactionAsync(cancellationToken);
+            // Adding Quizzes
+            try
+            {
+                var (existingQuizzes, newQuizzes) =
+                    await _quizRepository.GetQuizzesByID(
+                    collection.Quizzes.Select(c => c.QuizId).ToArray(), cancellationToken);
+
+                if (!addNewQuizzes)
+                {
+                    return new RequestError(
+                        HttpStatusCode.BadRequest,
+                        $"Collection contains non existing quizzes:" +
+                        $" {string.Join(',', newQuizzes)}");
+                }
+
+                var addQuizzes = collection.Quizzes.Where(cq => newQuizzes.Contains(cq.QuizId));
+                collection.Quizzes.Clear();
+                collection.Quizzes = existingQuizzes.ToList();
+
+                if (newQuizzes.Any())
+                {
+                    var result = await _quizRepository
+                        .AddQuizzes(addQuizzes, cancellationToken);
+
+                    if (result.IsT1)
+                    {
+                        return result.AsT1;
+                    }
+
+                    collection.Quizzes.ToList().AddRange(result.AsT0);
+                }
+
+                await _context.Collections.AddAsync(collection, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                return collection;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
 
         public async Task<OneOf<Collection, RequestError>> DeleteCollection(Guid id, CancellationToken cancellationToken)
@@ -85,7 +127,7 @@ namespace QuizGamePerssistence.Repositories
         public async Task<OneOf<Collection, RequestError>> UpdateCollection(Guid id, Collection collection, CancellationToken cancellationToken)
         {
             var foundedCollection = await _context.Collections
-           .Where(x => x.CollectionId == collection.CollectionId)
+           .Where(x => x.CollectionId == id)
            .FirstOrDefaultAsync(cancellationToken);
             if (foundedCollection is null)
             {
