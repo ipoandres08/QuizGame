@@ -34,7 +34,7 @@ namespace QuizGame.Service
             }
 
             var createdCollection = await _collectionRepository
-                    .AddCollection(newCollection.Adapt<Collection>(), addNewQuizzes, cancellationToken);
+                    .AddCollection(newCollection.Adapt<Collection>(), cancellationToken, addNewQuizzes);
             if (createdCollection.IsT1)
             {
                 return createdCollection.AsT1;

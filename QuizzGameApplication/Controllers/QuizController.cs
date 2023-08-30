@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QuizGame.Models;
+using QuizGamePerssistence.Models;
 using QuizGame.Service;
+using QuizGamePerssistence.Models.DTOs;
+using QuizzGameApplication.Helpers;
+using OneOf.Types;
 
 namespace QuizzGameApplication.Controllers
 {
@@ -16,7 +19,7 @@ namespace QuizzGameApplication.Controllers
         {
             service = quizService;
         }
-
+        /*
         /// <summary>
         /// Get a quiz by id 
         /// </summary>
@@ -26,16 +29,16 @@ namespace QuizzGameApplication.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<Quiz> GetById([FromRoute] int id)
+        public async Task<ActionResult<Quiz>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
-            Quiz quizFound = service.GetQuizById(id);
-            if(quizFound != null)
+            var result = await service.RetrieveQuizz(id, cancellationToken);
+            if (result.IsT0)
             {
-                return Ok(quizFound);
+                return Ok(result);
             }
-            return NotFound();
+            return result.HandleError(this);
         }
-
+        
         /// <summary>
         /// Get quizzes 
         /// </summary>
@@ -43,10 +46,10 @@ namespace QuizzGameApplication.Controllers
         /// <response code="200">Returns the requested Quizzes</response>
         /// <response code="400">Bad Request</response>
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet(Name = "GetQuiz")]
-        public IEnumerable<Quiz> Get()
+        [HttpGet]
+        public async Task<IEnumerable<Quiz>> Get(CancellationToken cancellationToken)
         {
-            return service.GetAllQuizzes();
+            return await service.RetrieveQuizzes(cancellationToken);
         }
 
         /// <summary>
@@ -62,14 +65,19 @@ namespace QuizzGameApplication.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost(Name = "PostQuizzes")]
-        public ActionResult Post([FromBody]Quiz quiz) 
+        public async Task<ActionResult> Post([FromBody] QuizForUpsert quiz, CancellationToken cancellationToken) 
         {
-            if(ModelState.IsValid)
+            var result = await service.CreateQuizz(quiz, cancellationToken);
+            if (result.IsT0)
             {
-                service.AddQuiz(quiz);
-                return Created("/api/Quiz/{id}", quiz);
+                // TODO: Improve this
+                var resourceURL = Url.Action(
+                    "GetCollection",
+                    "Collections",
+                    new { result.AsT0.CollectionId, cancellationToken }, Request.Scheme);
+                return Created("Created", result.AsT0);
             }
-            return UnprocessableEntity();
+            return result.HandleError(this);
         }
 
         /// <summary>
@@ -84,15 +92,14 @@ namespace QuizzGameApplication.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult<Quiz> Delete([FromRoute] int id) 
+        public async Task<ActionResult<Quiz>> Delete([FromRoute] Guid id, CancellationToken cancellationToken) 
         {
-            Quiz quizFound = service.GetQuizById(id);
-            if (quizFound != null)
+            var result = await service.DeleteQuizz(id, cancellationToken);
+            if (result.IsT0)
             {
-                service.DeleteQuiz(id);
-                return Ok(quizFound);
+                return Ok(result.AsT0);
             }
-            return NotFound();
+            return result.HandleError(this);
         }
 
         /// <summary>
@@ -111,15 +118,14 @@ namespace QuizzGameApplication.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPut]
         [Route("{id}")]
-        public ActionResult<Quiz> Put([FromRoute] int id, [FromBody] Quiz quiz)
+        public async Task<ActionResult<Quiz>> Put([FromRoute] Guid id, [FromBody] QuizForUpsert quiz, CancellationToken cancellationToken)
         {
-            Quiz quizFound = service.GetQuizById(id);
-            if (quizFound != null)
+            var result = await service.UpdateQuizz(id, quiz, cancellationToken);
+            if (result.IsT0)
             {
-                service.UpdateQuiz(id, quiz);
-                return Ok(quizFound);
+                return Ok(result.AsT0);
             }
-            return NotFound();
-        }
+            return result.HandleError(this);
+        }*/
     }
 }

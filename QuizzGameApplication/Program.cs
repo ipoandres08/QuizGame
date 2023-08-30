@@ -12,6 +12,8 @@ using QuizGamePerssistence.Repositories;
 using FluentValidation;
 using QuizGame.Validators;
 using QuizGamePerssistence.Models.DTOs;
+using Mapster;
+using MapsterMapper;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -92,15 +94,19 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAuthenticatedUser();
     });
 });
-
-builder.Services.AddSingleton<IQuestionService, QuestionService>();
-builder.Services.AddSingleton<IQuizService, QuizService>();
 builder.Services.AddSingleton<IAuthenticationRequestService, AuthenticationRequestService>();
 
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+
 builder.Services.AddSingleton<QuizGameContext>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+builder.Services.AddScoped<IQuizService, QuizService>();
+builder.Services.AddScoped<IValidator<QuizForUpsert>, QuizValidator>();
+
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
 builder.Services.AddScoped<IValidator<CollectionForUpsert>, CollectionValidator>();
 builder.Services.AddScoped<ICollectionService, CollectionService>();
+//builder.Services.AddScoped<IMapper, ServiceMapper> ();
 
 
 builder.Services.AddApiVersioning(setupAction =>

@@ -45,7 +45,7 @@ namespace QuizzGameApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<Collection>> CreateCollection([FromBody] CollectionForUpsert collectioToCreate, [FromQuery] bool addNewQuizzes, CancellationToken cancellationToken)
         {
-            var result = await _collectionService.CreateCollection(collectioToCreate, cancellationToken);
+            var result = await _collectionService.CreateCollection(collectioToCreate, addNewQuizzes, cancellationToken);
             if (result.IsT0)
             {
                 // TODO: Improve this
@@ -57,7 +57,7 @@ namespace QuizzGameApplication.Controllers
             }
             return result.HandleError(this);
         }
-
+        
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut]
         [Route("{id}")]

@@ -11,16 +11,18 @@ namespace QuizGamePerssistence.Repositories
     {
         private readonly QuizGameContext _context;
         private readonly IQuizRepository _quizRepository;  
+
         //private readonly IValidator<Collection> _validator;
 
         public CollectionRepository(QuizGameContext context, IQuizRepository quizRepository)
         {
             _context = context;
             _quizRepository = quizRepository;
+
             //_validator = validator;
         }
 
-        public async Task<OneOf<Collection, RequestError>> AddCollection(Collection collection, bool addNewQuizzes = false, CancellationToken cancellationToken)
+        public async Task<OneOf<Collection, RequestError>> AddCollection(Collection collection, CancellationToken cancellationToken, bool addNewQuizzes = false)
         {
             /*
             var validationResult = await _validator.ValidateAsync(collection);

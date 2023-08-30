@@ -14,7 +14,7 @@ namespace QuizGamePerssistence.Repositories
     {
         Task<IEnumerable<Collection>> GetCollections(CancellationToken cancellationToken);
         Task<OneOf<Collection, RequestError>> GetCollectionByID(Guid id, CancellationToken cancellationToken);
-        Task<OneOf<Collection, RequestError>> AddCollection(Collection collection, bool addNewQuizzes, CancellationToken cancellationToken);
+        Task<OneOf<Collection, RequestError>> AddCollection(Collection collection, CancellationToken cancellationToken, bool addNewQuizzes);
         Task<OneOf<Collection, RequestError>> DeleteCollection(Guid id, CancellationToken cancellationToken);
         Task<OneOf<Collection, RequestError>> UpdateCollection(Guid id, Collection collection, CancellationToken cancellationToken);
     }

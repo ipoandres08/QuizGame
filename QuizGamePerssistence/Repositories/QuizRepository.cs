@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OneOf;
 using QuizGamePerssistence.Models;
+using QuizGamePerssistence.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace QuizGamePerssistence.Models.DTOs
 {
     public class CollectionForUpsert
@@ -11,5 +6,7 @@ namespace QuizGamePerssistence.Models.DTOs
         public string? Name { get; set; }
 
         public string? Description { get; set; }
+
+        //public ICollection<QuizForUpsert> Quizzes { get; init; } = new List<QuizForUpsert> ();
     }
 }

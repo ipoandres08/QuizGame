@@ -16,7 +16,7 @@ namespace QuizGame.Service
         Task<OneOf<Collection, RequestError>> RetrieveCollection(
             Guid id, CancellationToken cancellationToken);
         Task<OneOf<Collection, RequestError>> CreateCollection(
-            CollectionForUpsert newCollection, CancellationToken cancellationToken);
+            CollectionForUpsert newCollection, bool addNewQuizzes, CancellationToken cancellationToken);
         Task<OneOf<Collection, RequestError>> UpdateCollection(
             Guid id, CollectionForUpsert collection, CancellationToken cancellationToken);
         Task<OneOf<Collection, RequestError>> DeleteCollection(
